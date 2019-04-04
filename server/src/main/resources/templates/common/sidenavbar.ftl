@@ -11,5 +11,7 @@
                 <a class="nav-link text-red" href="/logout">Logout <i style="float: right;" class="fa fa-sign-out fa-lg" aria-hidden="true"></i></a>
             </li>
         </ul>
+
     </#if>
+
 </nav>

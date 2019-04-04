@@ -25,7 +25,6 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <style>
-
         /* Move down content because we have a fixed navbar that is 3.5rem tall */
 
         h1 {
@@ -132,6 +131,9 @@
 
         .act-values {
             font-size: 3rem;
+        }
+        html{
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
         }
     </style>
 
