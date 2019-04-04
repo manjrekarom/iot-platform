@@ -1,171 +1,213 @@
 <#include "../common/header.ftl">
+<style>
+    #breadcrumb{
+        font-size: 18px;
+        border-radius: 2px;
+        background-color: #90b7ea4d;
+        margin-top:10px;
+        margin-bottom: 40px;
+
+    }
+    #arrow{
+        color: rgba(0, 0, 0, 0.5);
+        font-size:20px;
+    }
+    #cur_unitName{
+        color: black;
+        padding:10px;
+        margin:2px;
+        font-weight: 500;
+    }
+    .breadCrumbUnit{
+        color: rgba(0, 0, 0, 0.5);
+        padding:10px;
+        margin:2px;
+    }
+    .breadCrumbUnit:hover{
+        color:black;
+        text-decoration: none;
+    }
+
+</style>
 <body>
 <#include "../common/navbar.ftl"/>
 <div class="container-fluid" id="container-main">
-<#if user??>
+<#--<#if user??>
     <#include "../common/sidenavbar.ftl"/>
-</#if>
-    <main role="main" class="main col-sm-9 ml-sm-auto col-md-10 pt-3">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="float-right p-1" v-if="role=='ALL' || role=='WRITE'">
-                    <button v-on:click="newDevice" class="btn btn-outline-primary">Add Device</button>
-                    <button v-on:click="importThing" class="btn btn-outline-primary">Import Device</button>
-                </div>
+</#if>-->
+
+    <main role="main" class="main  pt-3">
+        <div class="container">
+            <div id="breadcrumb">
+                <span>
+                    <a href="/"><i class="fa fa-home  breadCrumbUnit" style=" font-size:25px;"aria-hidden="true" ></i></a>
+                    <i style="padding-left:10px;"class="fa fa-angle-right" id="arrow"></i>
+                </span>
+                <span v-for="parent in parents" >
+                    <a  v-bind:href="'/units/get/'+parent.id" class="breadCrumbUnit">{{parent.unitName}}  </a> <i class="fa fa-angle-right" id="arrow"></i>
+                </span>
+                <span id="cur_unitName">{{ thing.name }}</span>
             </div>
-            <div class="clearfix"></div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        {{ thing.name }}
-                        <div class="float-right">
-                            <div class="row clearfix">
-                                <img src="/static/img/ajax-loader.gif" v-if="saveLoaderStorage">
-                                <div class="col"><label class="badge badge-primary" for="storage">Enable storage</label>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="float-right p-1" v-if="role=='ALL' || role=='WRITE'">
+                        <button v-on:click="newDevice" class="btn btn-outline-primary">Add Device</button>
+                        <button v-on:click="importThing" class="btn btn-outline-primary">Import Device</button>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            {{ thing.name }}
+                            <div class="float-right">
+                                <div class="row clearfix">
+                                    <img src="/static/img/ajax-loader.gif" v-if="saveLoaderStorage">
+                                    <div class="col"><label class="badge badge-primary" for="storage">Enable storage</label>
+                                    </div>
+                                    <div class="col"><input type="checkbox" id="storage" class="form-check-input"
+                                                            v-model="storageEnabled" v-on:change="enableStorage"></div>
                                 </div>
-                                <div class="col"><input type="checkbox" id="storage" class="form-check-input"
-                                                        v-model="storageEnabled" v-on:change="enableStorage"></div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body p-0">
-                        <table class="table mb-0" v-if="devices.length">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Device Name</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tr v-for="d in devices">
-                                <td>{{d.name}}</td>
-                                <td>
-                                    <button v-on:click="deleteDevice(d)" class="btn btn-sm btn-danger text-white">
-                                        DELETE
-                                    </button>
-                                    <button v-on:click="editDevice(d)" class="btn btn-sm btn-default">EDIT</button>
-                                </td>
-                            </tr>
-                        </table>
-                        <div v-else class="h3 pt-2 pb-2 text-center text-muted" v-else>No devices</div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="float-right">
-                            <#--<button v-on:click="edit" class="btn btn-primary btn-sm">EDIT</button>-->
-                            <button v-on:click="generate" class="btn btn-primary btn-sm">GENERATE CLIENT</button>
-                            <#--<button v-on:click="downloadCertificates" class="btn btn-primary btn-sm">DOWNLOAD-->
-                                <#--CERTIFICATES-->
-                            <#--</button>-->
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        DOWNLOAD CERTIFICATES
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <button class="dropdown-item" type="button" v-on:click="downloadCertificatesAsZip">.zip</button>
-                                        <span title="Might have some issues with popup"><button class="dropdown-item" type="button" v-on:click="downloadCertificates">files</button></span>
-                                        <div class="dropdown-divider"></div>
-                                        <button class="dropdown-item" type="button" v-on:click="downloadRootCA">rootCA</button>
-                                    </div>
-                                </div>
-                            <button v-on:click="dashboard" class="btn btn-primary btn-sm">DASHBOARD</button>
-                        </div>
-                        <button v-on:click="deleteThing" class="btn btn-danger btn-sm float-left text-white"><i
-                                class="fa fa-trash-o fa-lg"></i>DELETE
-                            THING
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <p>&nbsp;</p>
-                <div class="card">
-                    <div class="card-header">
-                        Crons
-                    </div>
-                    <div class="card-body p-0">
-                        <table class="table mb-0" v-if="crons.length">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Cron expression</th>
-                                    <th>Desired state</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tr v-for="cron in crons">
-                                <td>
-                                    {{cron.cronName == '' ? '-----' : cron.cronName}}
-                                </td>
-                                <td>
-                                    {{cron.cronExpression}}
-                                </td>
-                                <td>
-                                    {{cron.desiredState}}
-                                </td>
-                                <td>
-                                    <button class="btn btn-danger btn-sm text-white"
-                                            v-on:click="deleteCron(cron)">DELETE</button>
-                                </td>
-                            </tr>
-                        </table>
-                        <div v-else class="h3 pt-2 pb-2 text-center text-muted" v-else>No crons</div>
-                    </div>
-                    <div class="card-footer">
-                        <button v-on:click="addCron" class="btn btn-sm btn-primary">ADD CRON</button>
-                        <#--<button v-on:click="deleteCron(cron)" class="btn btn-sm btn-default">EDIT</button>-->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row pb-5">
-            <div class="col-md-12">
-                <p>&nbsp;</p>
-                <div class="card">
-                    <div class="card-header">
-                        Rules
-                    </div>
-                    <div class="card-body p-0">
-                        <table class="table mb-0" v-if="rules.length">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Actions</th>
-                                    <th>Settings</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(rule,idx) in rules">
+                        <div class="card-body p-0">
+                            <table class="table mb-0" v-if="devices.length">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Device Name</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tr v-for="d in devices">
+                                    <td>{{d.name}}</td>
                                     <td>
-                                        {{rule.name}}
+                                        <button v-on:click="deleteDevice(d)" class="btn btn-sm btn-danger text-white">
+                                            DELETE
+                                        </button>
+                                        <button v-on:click="editDevice(d)" class="btn btn-sm btn-default">EDIT</button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div v-else class="h3 pt-2 pb-2 text-center text-muted" v-else>No devices</div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="float-right">
+                                <#--<button v-on:click="edit" class="btn btn-primary btn-sm">EDIT</button>-->
+                                <button v-on:click="generate" class="btn btn-primary btn-sm">GENERATE CLIENT</button>
+                                <#--<button v-on:click="downloadCertificates" class="btn btn-primary btn-sm">DOWNLOAD-->
+                                    <#--CERTIFICATES-->
+                                <#--</button>-->
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            DOWNLOAD CERTIFICATES
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <button class="dropdown-item" type="button" v-on:click="downloadCertificatesAsZip">.zip</button>
+                                            <span title="Might have some issues with popup"><button class="dropdown-item" type="button" v-on:click="downloadCertificates">files</button></span>
+                                            <div class="dropdown-divider"></div>
+                                            <button class="dropdown-item" type="button" v-on:click="downloadRootCA">rootCA</button>
+                                        </div>
+                                    </div>
+                                <button v-on:click="dashboard" class="btn btn-primary btn-sm">DASHBOARD</button>
+                            </div>
+                            <button v-on:click="deleteThing" class="btn btn-danger btn-sm float-left text-white"><i
+                                    class="fa fa-trash-o fa-lg"></i>DELETE
+                                THING
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p>&nbsp;</p>
+                    <div class="card">
+                        <div class="card-header">
+                            Crons
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table mb-0" v-if="crons.length">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Cron expression</th>
+                                        <th>Desired state</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tr v-for="cron in crons">
+                                    <td>
+                                        {{cron.cronName == '' ? '-----' : cron.cronName}}
                                     </td>
                                     <td>
-                                        {{rule.description == '' ? '-----' : rule.description}}
+                                        {{cron.cronExpression}}
+                                    </td>
+                                    <td>
+                                        {{cron.desiredState}}
                                     </td>
                                     <td>
                                         <button class="btn btn-danger btn-sm text-white"
-                                                v-on:click="deleteRule(rule, idx)">DELETE</button>
-                                        <button class="btn btn-sm btn-default"
-                                                v-on:click="editRuleModal(rule, idx)">EDIT</button>
-                                    </td>
-                                    <td>
-                                        <a v-bind:href="'/rules/' + rule.type.toLowerCase() + '/' + rule.snsAction.id" class="btn btn-success btn-sm" role="button" aria-pressed="true">DETAILS</a>
-                                        <#--<button v-on:click="" class="btn btn-sm btn-success">CHANGE</button>-->
+                                                v-on:click="deleteCron(cron)">DELETE</button>
                                     </td>
                                 </tr>
-                        </table>
-                        <div v-else class="h3 pt-2 pb-2 text-center text-muted" v-else>No rules</div>
-                    </div>
-                    <div class="card-footer">
-                        <button v-on:click="newRuleModal" class="btn btn-sm btn-primary">CREATE RULE</button>
+                            </table>
+                            <div v-else class="h3 pt-2 pb-2 text-center text-muted" v-else>No crons</div>
+                        </div>
+                        <div class="card-footer">
+                            <button v-on:click="addCron" class="btn btn-sm btn-primary">ADD CRON</button>
+                            <#--<button v-on:click="deleteCron(cron)" class="btn btn-sm btn-default">EDIT</button>-->
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row hidden hide" style="display: none;">
+            <div class="row pb-5">
+                <div class="col-md-12">
+                    <p>&nbsp;</p>
+                    <div class="card">
+                        <div class="card-header">
+                            Rules
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table mb-0" v-if="rules.length">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Actions</th>
+                                        <th>Settings</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(rule,idx) in rules">
+                                        <td>
+                                            {{rule.name}}
+                                        </td>
+                                        <td>
+                                            {{rule.description == '' ? '-----' : rule.description}}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger btn-sm text-white"
+                                                    v-on:click="deleteRule(rule, idx)">DELETE</button>
+                                            <button class="btn btn-sm btn-default"
+                                                    v-on:click="editRuleModal(rule, idx)">EDIT</button>
+                                        </td>
+                                        <td>
+                                            <a v-bind:href="'/rules/' + rule.type.toLowerCase() + '/' + rule.snsAction.id" class="btn btn-success btn-sm" role="button" aria-pressed="true">DETAILS</a>
+                                            <#--<button v-on:click="" class="btn btn-sm btn-success">CHANGE</button>-->
+                                        </td>
+                                    </tr>
+                            </table>
+                            <div v-else class="h3 pt-2 pb-2 text-center text-muted" v-else>No rules</div>
+                        </div>
+                        <div class="card-footer">
+                            <button v-on:click="newRuleModal" class="btn btn-sm btn-primary">CREATE RULE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row hidden hide" style="display: none;">
             <div class="col-md-6">
                 <p>&nbsp;</p>
                 <div class="card">
@@ -194,6 +236,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </main>
 <#include "../modals/crud_device.ftl"/>
@@ -242,7 +285,8 @@
             cronAttributeValue: "",
             cronName: "",
             crons: [],
-            storageEnabled: ""
+            storageEnabled: "",
+            parents:[]
         },
         methods: {
 
@@ -259,9 +303,17 @@
                         url: "/thing/delete/" + thingId,
                         "method": "DELETE",
                         success: function (data) {
-                            alert('Thing deleted');
+                            if(!!data.success == false)
+                                alert('Could not delete thing :(');
+                            else
+                                alert('Thing deleted :)');
                             this.load();
+                        },
+                        error: function(xhr, status, error){
+                            alert("Could not delete the thing");
+                            //alert(xhr.responseText);
                         }
+
                     });
                 }
             },
@@ -523,6 +575,12 @@
                     success: function(data) {
                         console.log(data);
                         that.ruleActionList = data;
+                    }
+                })
+                $.ajax({
+                    url: "/thing/parent/" + thingId,
+                    success: function (data) {
+                        that.parents = data;
                     }
                 });
                 that.getCrons();

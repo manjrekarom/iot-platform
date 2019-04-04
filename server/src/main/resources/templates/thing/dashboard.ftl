@@ -2,7 +2,7 @@
 <body>
 <#include "../common/navbar.ftl"/>
 <div class="container-fluid" id="container-main">
-<#include "../common/sidenavbar.ftl"/>
+<#--<#include "../common/sidenavbar.ftl"/>-->
     <main role="main" class="main col-sm-9 ml-sm-auto col-md-10 pt-3">
         <div class="row">
             <div class="col-md-12 clearfix">
