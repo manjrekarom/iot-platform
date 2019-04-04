@@ -17,9 +17,7 @@ import org.kyantra.interfaces.Session;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.security.Principal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +35,6 @@ public class UnitResource extends BaseResource {
     @Secure(roles = {RoleEnum.ALL, RoleEnum.WRITE, RoleEnum.READ})
     @Produces(MediaType.APPLICATION_JSON)
     public String get(@PathParam("id") Integer id) {
-        
         UnitBean unitBean = UnitDAO.getInstance().get(id);
         UserBean userBean = (UserBean)getSecurityContext().getUserPrincipal();
 
@@ -49,6 +46,40 @@ public class UnitResource extends BaseResource {
 
         return gson.toJson(unitBean);
     }
+
+
+    //to get the parent details
+    @GET
+    @Path("parent/{id}")
+    @Session
+    @Secure(roles = {RoleEnum.ALL, RoleEnum.WRITE, RoleEnum.READ})
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getParent(@PathParam("id") Integer id) {
+
+        ArrayList<UnitBean> parentList = new ArrayList<UnitBean>();
+        UnitBean unitBean = UnitDAO.getInstance().get(id);
+        UserBean userBean = (UserBean)getSecurityContext().getUserPrincipal();
+
+        if(unitBean == null)
+            throw new DataNotFoundException(ExceptionMessage.DATA_NOT_FOUND);
+
+        if (!AuthorizationHelper.getInstance().checkAccess(userBean, unitBean))
+            throw new ForbiddenException(ExceptionMessage.FORBIDDEN);
+
+        UnitBean parent=unitBean.getParent();
+
+        while(parent!= null){
+            System.out.println("id is "+ parent.getId());
+            parentList.add(parent);
+            System.out.println(parent.getUnitName());
+            parent=parent.getParent();
+
+        }
+        System.out.println(gson.toJson(parentList));
+        Collections.reverse(parentList);
+        return gson.toJson(parentList);
+    }
+
 
     // TODO: 5/29/18 Need authorization here? 
     @GET

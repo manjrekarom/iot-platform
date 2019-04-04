@@ -1,5 +1,6 @@
 package org.kyantra.resources;
 
+import com.amazonaws.services.iot.AWSIotClient;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
@@ -12,6 +13,7 @@ import com.amazonaws.services.iotdata.model.GetThingShadowRequest;
 import com.amazonaws.services.iotdata.model.GetThingShadowResult;
 import io.swagger.annotations.Api;
 
+import org.hibernate.sql.Delete;
 import org.kyantra.beans.RoleEnum;
 import org.kyantra.beans.ThingBean;
 import org.kyantra.beans.UnitBean;
@@ -29,12 +31,12 @@ import org.kyantra.utils.ThingHelper;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.xml.bind.SchemaOutputResolver;
 import java.io.File;
 import java.io.PrintWriter;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Siddhesh Prabhugaonkar on 13-11-2017.
@@ -52,7 +54,10 @@ public class ThingResource extends BaseResource {
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String get(@PathParam("id") Integer id) throws  ForbiddenException {
+
+
         ThingBean thingBean = ThingDAO.getInstance().get(id);
+        UnitBean parent=thingBean.getParentUnit();
 
         // check if thingBean is not null
         if (thingBean == null)
@@ -61,13 +66,49 @@ public class ThingResource extends BaseResource {
         // if this is done before null check, it'll throw a NullPointerException
         // but we want DataNotFoundException
         UserBean userBean = (UserBean)getSecurityContext().getUserPrincipal();
+        System.out.println("bbb"+gson.toJson(thingBean));
 
         if (!AuthorizationHelper.getInstance().checkAccess(userBean, thingBean))
             throw new  ForbiddenException(ExceptionMessage.FORBIDDEN);
-            
+
         return gson.toJson(thingBean);
     }
 
+//to get all the parents of thing
+    @GET
+    @Session
+    @Secure(roles = {RoleEnum.ALL, RoleEnum.WRITE, RoleEnum.READ})
+    @Path("parent/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getParent(@PathParam("id") Integer id) throws  ForbiddenException {
+
+        ArrayList<UnitBean> parentList = new ArrayList<UnitBean>();
+        ThingBean thingBean = ThingDAO.getInstance().get(id);
+
+
+        // check if thingBean is not null
+        if (thingBean == null)
+            throw new DataNotFoundException(ExceptionMessage.DATA_NOT_FOUND);
+
+
+        UserBean userBean = (UserBean)getSecurityContext().getUserPrincipal();
+        System.out.println("bbb"+gson.toJson(thingBean));
+
+        if (!AuthorizationHelper.getInstance().checkAccess(userBean, thingBean))
+            throw new  ForbiddenException(ExceptionMessage.FORBIDDEN);
+
+        UnitBean parent=thingBean.getParentUnit();
+        while(parent!= null){
+            parentList.add(parent);
+            System.out.println(parent.getUnitName());
+            parent=parent.getParent();
+
+        }
+        System.out.println("inside thing parent");
+        Collections.reverse(parentList);
+        return gson.toJson(parentList);
+
+    }
 
     @GET
     @Session
@@ -122,17 +163,78 @@ public class ThingResource extends BaseResource {
             throw new  ForbiddenException(ExceptionMessage.FORBIDDEN);
 
         try {
-            ThingDAO.getInstance().delete(id);
+
             // TODO: 5/24/18 return proper response
-            return "{}";
+            //trying something Andrea
+            AWSIot client = AwsIotHelper.getIotClient();
+           /* DeleteThingRequest req= new DeleteThingRequest();
+            AWSIot client = AwsIotHelper.getIotClient();
+            req.setThingName("thing"+id);
+
+            DetachThingPrincipalRequest detprinci = new DetachThingPrincipalRequest();
+            detprinci.setThingName("thing"+id);
+            client.detachThingPrincipal(detprinci);
+            client.deleteThing(req);*/
+
+            //new
+            ListThingPrincipalsRequest listp = new ListThingPrincipalsRequest();
+            listp.setThingName("thing"+id);
+            ListThingPrincipalsResult ltpr=client.listThingPrincipals(listp);
+            System.out.println(ltpr.getPrincipals());
+
+            //detaching policies from certificate which is named as target.
+            DetachPolicyRequest dpr = new DetachPolicyRequest();
+            dpr.setPolicyName(Constant.DEFAULT_POLICY);
+            for(int i=0; i < ltpr.getPrincipals().size(); i++) {
+                dpr.setPolicyName(Constant.DEFAULT_POLICY);
+                dpr.withTarget(ltpr.getPrincipals().get(i));
+                client.detachPolicy(dpr);
+            }
+            System.out.println("successfully detached policy from thing");
+
+
+            //detaching certificate
+            DetachThingPrincipalRequest detprinci = new DetachThingPrincipalRequest();
+            detprinci.setThingName("thing"+id);
+
+            DeleteCertificateRequest dcr= new DeleteCertificateRequest();
+            UpdateCertificateRequest ucr = new UpdateCertificateRequest();
+            for(int i=0; i < ltpr.getPrincipals().size(); i++) {
+                detprinci.setPrincipal(ltpr.getPrincipals().get(i));
+                client.detachThingPrincipal(detprinci);
+                System.out.println("successfully detached certificate from thing");
+
+
+                //deleting certificate
+                dcr.setForceDelete(true);
+                dcr.setCertificateId(ltpr.getPrincipals().get(i).split("/")[1]);
+
+                ucr.setCertificateId(ltpr.getPrincipals().get(i).split("/")[1]);
+                ucr.setNewStatus(CertificateStatus.INACTIVE);
+                client.updateCertificate(ucr);
+                client.deleteCertificate(dcr);
+
+                System.out.println("successfully deleted certificate from thing");
+
+            }
+
+            DeleteThingRequest req= new DeleteThingRequest();
+            req.setThingName("thing"+id);
+            client.deleteThing(req);
+
+            ThingDAO.getInstance().delete(id);
+
+
         } catch (Throwable t) {
             t.printStackTrace();
+            throw t;
+            //return "{\"success\":true}";
         }
-        return "{}";
+        return "{\"success\":true}";
     }
 
 
-    // TODO: 6/4/18 Debug return succes: false 
+    // TODO: 6/4/18 Debug return success: false
     @POST
     @Session
     @Secure(roles = {RoleEnum.ALL,RoleEnum.WRITE}, subjectType = "thing", subjectField = "parentId")
