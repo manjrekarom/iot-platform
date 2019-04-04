@@ -48,7 +48,7 @@
                 </span>
                 <span id="cur_unitName">{{ thing.name }}</span>
             </div>
-            <div class="row">
+           <#-- <div class="row">
                 <div class="col-md-12">
                     <div class="float-right p-1" v-if="role=='ALL' || role=='WRITE'">
                         <button v-on:click="newDevice" class="btn btn-outline-primary">Add Device</button>
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div class="clearfix"></div>
-            </div>
+            </div>-->
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -65,6 +65,11 @@
                             <div class="float-right">
                                 <div class="row clearfix">
                                     <img src="/static/img/ajax-loader.gif" v-if="saveLoaderStorage">
+
+                                        <div class="float-right p-1" v-if="role=='ALL' || role=='WRITE'">
+                                            <button v-on:click="newDevice" class="btn btn-outline-primary btn-sm ">Add Device</button>
+                                            <button v-on:click="importThing" class="btn btn-outline-primary btn-sm">Import Device</button>
+                                        </div>
                                     <div class="col"><label class="badge badge-primary" for="storage">Enable storage</label>
                                     </div>
                                     <div class="col"><input type="checkbox" id="storage" class="form-check-input"
