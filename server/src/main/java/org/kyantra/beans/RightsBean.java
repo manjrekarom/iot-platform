@@ -2,22 +2,12 @@ package org.kyantra.beans;
 
 import com.google.gson.annotations.Expose;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 /**
  * A right represents authorization of a user.
  * It is of the form unit_id:role.
- * Roles are currently static and only read only and admin (full priviledges).
+ * Roles are currently static and only read only and admin (full privileges).
  */
 @Entity
 @Table(name = "rights", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "unit_id"})})
@@ -28,12 +18,12 @@ public class RightsBean {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "unit_id")
     @Expose
     UnitBean unit;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     @Expose
     UserBean user;

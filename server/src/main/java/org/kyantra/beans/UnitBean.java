@@ -1,6 +1,7 @@
 package org.kyantra.beans;
 
 import com.google.gson.annotations.Expose;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kyantra.dao.UnitDAO;
@@ -47,6 +48,17 @@ public class UnitBean {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "parentUnit", orphanRemoval = true, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<ThingBean> things;
+
+    @OneToMany(mappedBy = "unit", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RightsBean> rights;
+
+    public List<RightsBean> getRights() {
+        return rights;
+    }
+
+    public void setRights(List<RightsBean> rights) {
+        this.rights = rights;
+    }
 
     public List<UnitBean> getSubunits() {
         return subunits;
