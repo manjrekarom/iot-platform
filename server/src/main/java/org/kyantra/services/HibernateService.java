@@ -3,19 +3,23 @@ package org.kyantra.services;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+
 import org.kyantra.config.EnvironmentConfig;
 import org.kyantra.beans.*;
 
 public class HibernateService {
 
-    private static HibernateService mService = new HibernateService();
-    private static SessionFactory sessionFactory;
+    private static HibernateService mService = null;
+    private static SessionFactory sessionFactory = null;
 
-    private HibernateService() {
-
+    private HibernateService(String envConf) {
         Configuration configuration = new Configuration();
 
-        if (System.getProperty("environment") == null)
+        if (envConf.equals("test"))
+            configuration.configure("hibernate-test.cfg.xml");
+        else if (envConf.equals("dev"))
+            configuration.configure("hibernate.cfg.xml");
+        else if (System.getProperty("environment") == null)
             configuration.configure("hibernate.cfg.xml");
         else if (System.getProperty("environment").equals(EnvironmentConfig.TEST))
             configuration.configure("hibernate-test.cfg.xml");
@@ -37,14 +41,25 @@ public class HibernateService {
                 .addAnnotatedClass(BlocklyBean.class)
                 .addAnnotatedClass(ActuatorBean.class);
 
-        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
+                .applySettings(configuration.getProperties());
+
         sessionFactory = configuration.buildSessionFactory(builder.build());
     }
 
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
-    public static HibernateService getInstance(){
+
+    public static HibernateService getInstance() {
+        if (mService == null)
+            mService = new HibernateService("dev");
+        return mService;
+    }
+
+    public static HibernateService getInstance(String envConf) {
+        if (mService == null)
+            mService = new HibernateService(envConf);
         return mService;
     }
 }
