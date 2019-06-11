@@ -60,6 +60,11 @@ public class UnitBean {
         this.rights = rights;
     }
 
+    public void addRight(RightsBean right) {
+        this.rights.add(right);
+        right.setUnit(this);
+    }
+
     public List<UnitBean> getSubunits() {
         return subunits;
     }
