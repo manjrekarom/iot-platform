@@ -20,13 +20,13 @@ public class BaseResource {
 //    @Context
     HttpServletRequest request;
 
-    public BaseResource(){
+    public BaseResource() {
         if(service==null) {
             service = HibernateService.getInstance();
         }
     }
 
-    public BaseResource(SecurityContext sc, HttpServletRequest request){
+    public BaseResource(SecurityContext sc, HttpServletRequest request) {
         if(service==null) {
             service = HibernateService.getInstance();
         }

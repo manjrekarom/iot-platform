@@ -619,7 +619,7 @@
                 that.saveLoader = true;
                 saveCronData(that, function() {
                     var desired = {};
-
+                    console.log(that.cronAttributeValue);
                     desired["device" + that.cronDevice.id + "." + that.cronAttribute.id] = (that.cronAttribute.type === 'Integer' || that.cronAttribute.type === 'Boolean') ? parseInt(that.cronAttributeValue, 10) : that.cronAttributeValue;
                     if (that.cronAttribute.type === 'Double') {
                         desired["device" + that.cronDevice.id + "." + that.cronAttribute.id] = parseFloat(that.cronAttributeValue);

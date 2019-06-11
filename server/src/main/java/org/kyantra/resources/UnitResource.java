@@ -100,7 +100,7 @@ public class UnitResource extends BaseResource {
     @DELETE
     @Path("delete/{id}")
     @Session
-    @Secure(roles = {RoleEnum.ALL,RoleEnum.WRITE}, subjectType = "unit", subjectField = "parent_id")
+    @Secure(roles = {RoleEnum.ALL, RoleEnum.WRITE}, subjectType = "unit", subjectField = "parent_id")
     @Produces(MediaType.APPLICATION_JSON)
     public String delete(@PathParam("id") Integer id) {
         

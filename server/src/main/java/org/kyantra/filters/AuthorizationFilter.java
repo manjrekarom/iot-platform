@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Secure
 @Provider
@@ -47,7 +46,7 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         String authorizationCookie = requestContext.getCookies().getOrDefault("authorization", new Cookie("token","")).getValue().toString();
 
         // Validate the Authorization header
-        if (!isTokenBasedAuthentication(authorizationHeader) && !isTokenBasedAuthentication(authorizationCookie)) {
+        if (isTokenBasedAuthentication(authorizationHeader) && isTokenBasedAuthentication(authorizationCookie)) {
             abortWithUnauthorized(requestContext);
             return;
         }
@@ -119,9 +118,7 @@ public class AuthorizationFilter implements ContainerRequestFilter {
     }
 
     private boolean isTokenBasedAuthentication(String authorizationHeader) {
-
-        return authorizationHeader != null && !authorizationHeader.toLowerCase().isEmpty();
-
+        return authorizationHeader == null || authorizationHeader.toLowerCase().isEmpty();
     }
 
     private void abortWithUnauthorized(ContainerRequestContext requestContext) {
