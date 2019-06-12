@@ -2,14 +2,10 @@ package org.kyantra.beans;
 
 import com.google.gson.annotations.Expose;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.security.Principal;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -31,7 +27,7 @@ public class UserBean implements Principal {
     String name;
 
     @NotNull
-    @Column(name="email" ,unique = true)
+    @Column(name="email", unique = true)
     @Expose
     String email;
 
@@ -39,6 +35,21 @@ public class UserBean implements Principal {
     @Column(name="password")
     String password;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    List<RightsBean> rights;
+
+    public List<RightsBean> getRights() {
+        return rights;
+    }
+
+    public void setRights(List<RightsBean> rights) {
+        this.rights = rights;
+    }
+
+    public void addRight(RightsBean right) {
+        this.rights.add(right);
+        right.setUser(this);
+    }
 
     public String getPassword() {
         return password;

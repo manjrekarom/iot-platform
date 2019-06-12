@@ -21,13 +21,13 @@ public class SessionBean {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column(name = "token" ,unique = true)
     @Expose
+    @Column(name = "token", unique = true)
     String token;
 
+    @Expose
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    @Expose
     UserBean user;
 
     public Integer getId() {

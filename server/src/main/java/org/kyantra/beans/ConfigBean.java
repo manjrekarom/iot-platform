@@ -19,7 +19,7 @@ public class ConfigBean {
     Integer id;
 
     @Expose
-    @Column(name = "confKey" ,unique = true)
+    @Column(name = "confKey", unique = true)
     String confKey;
 
     @Expose

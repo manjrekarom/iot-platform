@@ -10,7 +10,6 @@ import java.util.List;
 @Entity
 @Table(name = "devices")
 public class DeviceBean {
-
     @Id
     @Expose
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,11 +1,7 @@
 package org.kyantra;
 
 import io.swagger.jaxrs.config.BeanConfig;
-import org.apache.commons.cli.BasicParser;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
 
 import org.glassfish.grizzly.http.server.CLStaticHttpHandler;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -36,7 +32,8 @@ public class Main {
 
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setTitle("E-Yantra IoT Platform API");
-        beanConfig.setDescription("Below are endpoints defined for e-Yantra IoT Platform. Note that you need to have an account so that you can get the token which is mandatory to make requests.");
+        beanConfig.setDescription("Below are endpoints defined for e-Yantra IoT Platform. Note that you need to" +
+                "have an account so that you can get the token which is mandatory to make requests.");
         beanConfig.setVersion("1.2.3");
         beanConfig.setSchemes(new String[]{"http"});
         beanConfig.setBasePath("/");
@@ -64,12 +61,9 @@ public class Main {
         HttpServer server = null;
 
         if(useSSL){
-
             rc.register(HTTPSRedirectFilter.class);
 
-
             SSLContextConfigurator sslCon = new SSLContextConfigurator();
-
             sslCon.setKeyStoreFile("/var/www/intg/intg.ks"); // contains server keypair
             sslCon.setKeyStorePass("intg.io");
             server = GrizzlyHttpServerFactory.createHttpServer(new URI("https://0.0.0.0/"),
@@ -93,9 +87,13 @@ public class Main {
         Options options = new Options();
         options.addOption("port", true, "Port to run on");
         options.addOption("ssl",false, "Use ssl");
-        CommandLineParser parser = new BasicParser();
+
+        CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse( options, args);
+
         int port = Integer.parseInt(cmd.getOptionValue("port","8002"));
+        String env = cmd.getOptionValue("env","dev");
+
         HibernateService hibernateService = HibernateService.getInstance(); //initialized hibernate service
         final HttpServer server = startServer(port, cmd.hasOption("ssl"));
     }

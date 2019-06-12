@@ -37,11 +37,8 @@ public class SessionFilter implements ContainerRequestFilter {
             return false;
         } else {
             Session secured = annotatedElement.getAnnotation(Session.class);
-            if (secured != null) {
-                return true;
-            }
+            return secured != null;
         }
-        return false;
     }
 
     @Override

@@ -32,8 +32,6 @@ public class ThingDAO extends BaseDAO{
         ThingBean thingBean = unitBean.addThing(bean);
         session.saveOrUpdate(unitBean);
 
-//        Session session = getService().getSessionFactory().openSession();
-//        session.flush();
         session.getTransaction().commit();
         session.close();
         EntityHandler.getInstance().triggerAdd(thingBean);

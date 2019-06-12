@@ -25,12 +25,11 @@ public class AuthorizationDAO extends BaseDAO{
             List<RightsBean> rights = query.getResultList();
             session.close();
 
-            if (rights.size() > 0)
-                return true;
+            return rights.size() > 0;
 
-            return false;
         } catch (Throwable t) {
-            return true;
+            t.printStackTrace();
+            throw  t;
         }
     }
 
@@ -44,10 +43,8 @@ public class AuthorizationDAO extends BaseDAO{
             List<RightsBean> rights = query.getResultList();
             session.close();
 
-            if (rights.size() > 0)
-                return true;
+            return rights.size() > 0;
 
-            return false;
         } catch (Throwable t) {
             return true;
         }
@@ -63,10 +60,8 @@ public class AuthorizationDAO extends BaseDAO{
             List<RightsBean> rights = query.getResultList();
             session.close();
 
-            if (rights.size() > 0)
-                return true;
 
-            return false;
+            return rights.size() > 0;
         } catch (Throwable t) {
             return true;
         }
@@ -81,10 +76,7 @@ public class AuthorizationDAO extends BaseDAO{
             List<RightsBean> rights = query.getResultList();
             session.close();
 
-            if (rights.size() > 0)
-                return true;
-
-            return false;
+            return rights.size() > 0;
         } catch (Throwable t) {
             return true;
         }

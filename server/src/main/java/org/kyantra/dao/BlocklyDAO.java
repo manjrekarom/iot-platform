@@ -20,7 +20,7 @@ public class BlocklyDAO extends BaseDAO{
     static BlocklyDAO instance = new BlocklyDAO();
     public static BlocklyDAO getInstance(){ return instance; }
 
-    public BlocklyBean add(BlocklyBean currentBlockly){
+    public BlocklyBean add(BlocklyBean currentBlockly) {
         Session session = getService().getSessionFactory().openSession();
         session.beginTransaction();
         session.save(currentBlockly);
