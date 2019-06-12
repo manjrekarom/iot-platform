@@ -33,7 +33,7 @@ public class UserResource extends BaseResource {
     @Session
     @Secure(roles = {RoleEnum.READ, RoleEnum.WRITE, RoleEnum.ALL})
     @Produces(MediaType.APPLICATION_JSON)
-    public String get(@PathParam("id") Integer id)   {
+    public String get(@PathParam("id") Integer id) {
         UserBean targetUser = UserDAO.getInstance().get(id);
         UserBean currentUser = (UserBean)getSecurityContext().getUserPrincipal();
 

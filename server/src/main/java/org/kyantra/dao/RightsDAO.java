@@ -24,11 +24,10 @@ public class RightsDAO {
 
 
     private RightsDAO(){
-
         mService = HibernateService.getInstance();
     }
 
-    public RightsBean add(RightsBean bean){
+    public RightsBean add(RightsBean bean) {
         Session session = mService.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         session.save(bean);

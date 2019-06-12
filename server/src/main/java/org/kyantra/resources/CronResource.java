@@ -113,8 +113,7 @@ public class CronResource extends BaseResource {
     @Secure(roles = {RoleEnum.ALL,RoleEnum.WRITE}, subjectType = "unit", subjectField = "parent_id")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public String create(
-            @FormParam("thingId") Integer thingId,
+    public String create(@FormParam("thingId") Integer thingId,
             @FormParam("name") String cronName,
             @FormParam("cronExpression") String cronExpression,
             @FormParam("desiredState") String desiredState,

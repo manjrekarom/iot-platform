@@ -27,7 +27,7 @@ public class UserBean implements Principal {
     String name;
 
     @NotNull
-    @Column(name="email" ,unique = true)
+    @Column(name="email", unique = true)
     @Expose
     String email;
 

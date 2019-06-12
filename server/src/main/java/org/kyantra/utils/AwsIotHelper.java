@@ -70,7 +70,13 @@ public class AwsIotHelper {
 
     public static AmazonSimpleEmailService getAmazonSESClient() {
         AmazonSimpleEmailServiceClientBuilder clientBuilder = AmazonSimpleEmailServiceClientBuilder.standard();
-        clientBuilder = (AmazonSimpleEmailServiceClientBuilder) setUpBuilder(clientBuilder);
+
+        String awsKey = ConfigDAO.getInstance().get("awsKey").getValue();
+        String awsSecret = ConfigDAO.getInstance().get("awsSecret").getValue();
+
+        clientBuilder.setCredentials(new AWSCredsProvider(new BasicAWSCredentials(awsKey, awsSecret)));
+        // At the time of writing, only 3 regions were available for SES
+        clientBuilder.setRegion(Regions.US_EAST_1.getName());
         return clientBuilder.build();
     }
 
