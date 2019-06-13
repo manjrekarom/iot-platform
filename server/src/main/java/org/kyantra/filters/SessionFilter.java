@@ -1,9 +1,9 @@
 package org.kyantra.filters;
 
-import org.kyantra.beans.UserBean;
-import org.kyantra.dao.UserDAO;
-import org.kyantra.exceptionhandling.ExceptionMessage;
-import org.kyantra.interfaces.Session;
+import org.kyantra.core.user.UserBean;
+import org.kyantra.core.user.UserDAO;
+import org.kyantra.exception.ExceptionMessage;
+import org.kyantra.annotation.Session;
 
 import javax.annotation.Priority;
 import javax.servlet.http.HttpServletRequest;

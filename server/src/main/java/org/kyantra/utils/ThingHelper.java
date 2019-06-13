@@ -5,7 +5,7 @@ package org.kyantra.utils;
  * certificates, attaching policies, etc.*/
 
 import com.amazonaws.services.iot.model.*;
-import org.kyantra.dao.ConfigDAO;
+import org.kyantra.config.ConfigDAO;
 
 import java.util.ArrayList;
 import java.util.List;

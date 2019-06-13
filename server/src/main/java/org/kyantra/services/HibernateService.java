@@ -4,8 +4,22 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
+import org.kyantra.config.ConfigBean;
 import org.kyantra.config.EnvironmentConfig;
-import org.kyantra.beans.*;
+import org.kyantra.core.actuator.ActuatorBean;
+import org.kyantra.core.auth.RightsBean;
+import org.kyantra.core.auth.SessionBean;
+import org.kyantra.core.blockly.BlocklyBean;
+import org.kyantra.core.cron.CronBean;
+import org.kyantra.core.device.DeviceBean;
+import org.kyantra.core.deviceAttribute.DeviceAttributeBean;
+import org.kyantra.core.invite.InviteBean;
+import org.kyantra.core.rule.RuleBean;
+import org.kyantra.core.sns.SnsBean;
+import org.kyantra.core.sns.SnsSubscriptionBean;
+import org.kyantra.core.thing.ThingBean;
+import org.kyantra.core.unit.UnitBean;
+import org.kyantra.core.user.UserBean;
 
 public class HibernateService {
 

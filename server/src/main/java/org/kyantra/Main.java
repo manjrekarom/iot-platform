@@ -19,8 +19,8 @@ import java.net.URISyntaxException;
 import org.kyantra.filters.AuthorizationFilter;
 import org.kyantra.filters.CORSFilter;
 import org.kyantra.filters.SessionFilter;
-import org.kyantra.exceptionhandling.AppExceptionMapper;
-import org.kyantra.resources.AuthResource;
+import org.kyantra.exception.AppExceptionMapper;
+import org.kyantra.core.auth.AuthResource;
 import org.kyantra.services.HibernateService;
 import org.kyantra.filters.HTTPSRedirectFilter;
 
@@ -28,7 +28,7 @@ public class Main {
 
     public static HttpServer startServer(int port, boolean useSSL) throws URISyntaxException {
 
-        String resources = "org.kyantra.resources";
+        String[] resources = {"org.kyantra.resources", "org.kyantra.core"};
 
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setTitle("E-Yantra IoT Platform API");
@@ -37,7 +37,7 @@ public class Main {
         beanConfig.setVersion("1.2.3");
         beanConfig.setSchemes(new String[]{"http"});
         beanConfig.setBasePath("/");
-        beanConfig.setResourcePackage(resources);
+        beanConfig.setResourcePackage(resources[0]);
         beanConfig.setScan(true);
 
         final ResourceConfig rc = new ResourceConfig().packages(resources);
@@ -60,7 +60,7 @@ public class Main {
 
         HttpServer server = null;
 
-        if(useSSL){
+        if (useSSL) {
             rc.register(HTTPSRedirectFilter.class);
 
             SSLContextConfigurator sslCon = new SSLContextConfigurator();

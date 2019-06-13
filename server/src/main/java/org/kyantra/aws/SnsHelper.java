@@ -7,10 +7,10 @@ import com.amazonaws.services.sns.model.CreateTopicRequest;
 import com.amazonaws.services.sns.model.CreateTopicResult;
 import com.amazonaws.services.sns.model.SubscribeRequest;
 import com.amazonaws.services.sns.model.SubscribeResult;
-import org.kyantra.beans.RuleBean;
-import org.kyantra.beans.SnsBean;
-import org.kyantra.beans.SnsSubscriptionBean;
-import org.kyantra.dao.ConfigDAO;
+import org.kyantra.core.rule.RuleBean;
+import org.kyantra.core.sns.SnsBean;
+import org.kyantra.core.sns.SnsSubscriptionBean;
+import org.kyantra.config.ConfigDAO;
 import org.kyantra.utils.AwsIotHelper;
 
 import java.util.ArrayList;

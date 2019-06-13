@@ -4,8 +4,8 @@ import com.amazonaws.services.iot.model.Action;
 import com.amazonaws.services.iot.model.LambdaAction;
 import com.amazonaws.services.iot.model.MessageFormat;
 import com.amazonaws.services.iot.model.SnsAction;
-import org.kyantra.beans.SnsBean;
-import org.kyantra.dao.ConfigDAO;
+import org.kyantra.core.sns.SnsBean;
+import org.kyantra.config.ConfigDAO;
 
 // singleton
 public class ActionHelper {

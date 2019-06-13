@@ -5,7 +5,7 @@ import com.amazonaws.services.iot.model.GetTopicRuleResult;
 import com.amazonaws.services.lambda.AWSLambda;
 import com.amazonaws.services.lambda.model.AddPermissionRequest;
 import com.amazonaws.services.lambda.model.AddPermissionResult;
-import org.kyantra.dao.ConfigDAO;
+import org.kyantra.config.ConfigDAO;
 import org.kyantra.utils.AwsIotHelper;
 
 import java.util.UUID;
