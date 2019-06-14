@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class BlocklyDAO extends BaseDAO {
+public class BlocklyDAO extends BaseDAO<BlocklyBean> {
     static BlocklyDAO instance = new BlocklyDAO();
     public static BlocklyDAO getInstance(){ return instance; }
 
@@ -27,6 +27,11 @@ public class BlocklyDAO extends BaseDAO {
         BlocklyBean blocklyBean = session.get(BlocklyBean.class,id);
         session.close();
         return blocklyBean;
+    }
+
+    @Override
+    public List<BlocklyBean> getAll() {
+        return null;
     }
 
     public void delete(Integer id) {

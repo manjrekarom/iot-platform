@@ -19,10 +19,11 @@ import java.util.List;
 /**
  * Created by Siddhesh Prabhugaonkar on 13-11-2017.
  */
-public class DeviceAttributeDAO extends BaseDAO {
+public class DeviceAttributeDAO extends BaseDAO<DeviceAttributeBean> {
     static DeviceAttributeDAO instance = new DeviceAttributeDAO();
     public static DeviceAttributeDAO getInstance(){ return instance; }
 
+    @Override
     public DeviceAttributeBean add(DeviceAttributeBean bean){
         Session session = getService().getSessionFactory().openSession();
         session.beginTransaction();
@@ -36,6 +37,14 @@ public class DeviceAttributeDAO extends BaseDAO {
         session.close();
         EntityHandler.getInstance().triggerAdd(deviceAttributeBean);
         return deviceAttributeBean;
+    }
+
+    @Override
+    protected DeviceAttributeBean update(Integer id, DeviceAttributeBean deviceAttributeBean) {
+        Session session = getService().getSessionFactory().openSession();
+        session.beginTransaction();
+
+
     }
 
     /**
@@ -69,6 +78,7 @@ public class DeviceAttributeDAO extends BaseDAO {
         return list;
     }
 
+    @Override
     public DeviceAttributeBean get(Integer id) {
         Session session = getService().getSessionFactory().openSession();
         DeviceAttributeBean deviceAttributeBean = session.get(DeviceAttributeBean.class,id);
