@@ -8,15 +8,15 @@ import java.io.OutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import org.kyantra.dao.ThingDAO;
-import org.kyantra.dao.DeviceDAO;
-import org.kyantra.dao.DeviceAttributeDAO;
-import org.kyantra.dao.ConfigDAO;
-import org.kyantra.dao.UnitDAO;
-import org.kyantra.beans.ThingBean;
-import org.kyantra.beans.DeviceAttributeBean;
-import org.kyantra.beans.UnitBean;
-import org.kyantra.beans.DeviceBean;
+import org.kyantra.core.thing.ThingDAO;
+import org.kyantra.core.device.DeviceDAO;
+import org.kyantra.core.deviceAttribute.DeviceAttributeDAO;
+import org.kyantra.config.ConfigDAO;
+import org.kyantra.core.unit.UnitDAO;
+import org.kyantra.core.thing.ThingBean;
+import org.kyantra.core.deviceAttribute.DeviceAttributeBean;
+import org.kyantra.core.unit.UnitBean;
+import org.kyantra.core.device.DeviceBean;
 
 
 public class EntityHandler {

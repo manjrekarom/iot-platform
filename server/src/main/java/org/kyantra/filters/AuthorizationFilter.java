@@ -1,11 +1,11 @@
 package org.kyantra.filters;
 
-import org.kyantra.beans.RightsBean;
-import org.kyantra.beans.RoleEnum;
-import org.kyantra.beans.UserBean;
-import org.kyantra.dao.RightsDAO;
-import org.kyantra.dao.UserDAO;
-import org.kyantra.interfaces.Secure;
+import org.kyantra.core.auth.RightsBean;
+import org.kyantra.common.RoleEnum;
+import org.kyantra.core.user.UserBean;
+import org.kyantra.core.auth.RightsDAO;
+import org.kyantra.core.user.UserDAO;
+import org.kyantra.annotation.Secure;
 
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;

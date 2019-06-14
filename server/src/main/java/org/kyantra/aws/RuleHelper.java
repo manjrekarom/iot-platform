@@ -3,15 +3,11 @@ package org.kyantra.aws;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.iot.model.*;
-import org.kyantra.beans.RuleBean;
-import org.kyantra.beans.SnsBean;
-import org.kyantra.beans.ActuatorBean;
-import org.kyantra.dao.ConfigDAO;
-import org.kyantra.dao.RuleDAO;
+import org.kyantra.core.rule.RuleBean;
+import org.kyantra.core.sns.SnsBean;
+import org.kyantra.core.actuator.ActuatorBean;
+import org.kyantra.core.rule.RuleDAO;
 import org.kyantra.utils.AwsIotHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RuleHelper {
 

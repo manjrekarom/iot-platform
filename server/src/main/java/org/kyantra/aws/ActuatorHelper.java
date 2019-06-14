@@ -2,16 +2,9 @@ package org.kyantra.aws;
 
 import com.amazonaws.services.iot.model.Action;
 import com.amazonaws.services.iot.model.TopicRulePayload;
-import com.amazonaws.services.sns.AmazonSNS;
-import com.amazonaws.services.sns.model.CreateTopicRequest;
-import com.amazonaws.services.sns.model.CreateTopicResult;
-import com.amazonaws.services.sns.model.SubscribeRequest;
-import com.amazonaws.services.sns.model.SubscribeResult;
-import org.kyantra.beans.RuleBean;
-import org.kyantra.beans.ActuatorBean;
-import org.kyantra.beans.SnsSubscriptionBean;
-import org.kyantra.dao.ConfigDAO;
-import org.kyantra.utils.AwsIotHelper;
+import org.kyantra.core.rule.RuleBean;
+import org.kyantra.core.actuator.ActuatorBean;
+import org.kyantra.config.ConfigDAO;
 
 import java.util.ArrayList;
 import java.util.List;

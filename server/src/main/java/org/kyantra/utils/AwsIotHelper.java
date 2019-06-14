@@ -20,7 +20,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 
 import org.kyantra.config.AWSCredsProvider;
-import org.kyantra.dao.ConfigDAO;
+import org.kyantra.config.ConfigDAO;
 
 public class AwsIotHelper {
 
