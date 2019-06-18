@@ -8,7 +8,7 @@ import org.kyantra.common.BaseDAO;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
-public class InviteDAO extends BaseDAO {
+public class InviteDAO extends BaseDAO<InviteBean> {
     private static InviteDAO instance = new InviteDAO();
     public static InviteDAO getInstance() {
         return instance;
@@ -46,9 +46,10 @@ public class InviteDAO extends BaseDAO {
         return inviteBean;
     }
 
-    public void update(Integer id, InviteBean inviteBean) {
+    public InviteBean update(Integer id, InviteBean inviteBean) {
         if (id <= 0)
-            return;
+            return null;
+
         Session session = getService().getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         InviteBean oldInvite = session.get(InviteBean.class, id);
@@ -61,5 +62,11 @@ public class InviteDAO extends BaseDAO {
 
         tx.commit();
         session.close();
+        return oldInvite;
+    }
+
+    @Override
+    public void delete(InviteBean inviteBean) {
+
     }
 }

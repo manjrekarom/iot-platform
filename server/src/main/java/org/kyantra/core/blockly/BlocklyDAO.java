@@ -22,16 +22,21 @@ public class BlocklyDAO extends BaseDAO<BlocklyBean> {
         return currentBlockly;
     }
 
+    @Override
+    public BlocklyBean update(Integer id, BlocklyBean blocklyBean) {
+        return null;
+    }
+
+    @Override
+    public void delete(BlocklyBean blocklyBean) {
+
+    }
+
     public BlocklyBean get(Integer id) {
         Session session = getService().getSessionFactory().openSession();
         BlocklyBean blocklyBean = session.get(BlocklyBean.class,id);
         session.close();
         return blocklyBean;
-    }
-
-    @Override
-    public List<BlocklyBean> getAll() {
-        return null;
     }
 
     public void delete(Integer id) {

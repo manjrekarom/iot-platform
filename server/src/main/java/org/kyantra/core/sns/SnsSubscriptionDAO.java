@@ -3,7 +3,7 @@ package org.kyantra.core.sns;
 import org.hibernate.Session;
 import org.kyantra.common.BaseDAO;
 
-public class SnsSubscriptionDAO extends BaseDAO {
+public class SnsSubscriptionDAO extends BaseDAO<SnsSubscriptionBean> {
     static SnsSubscriptionDAO instance = new SnsSubscriptionDAO();
     public static SnsSubscriptionDAO getInstance() {
         return instance;
@@ -21,6 +21,16 @@ public class SnsSubscriptionDAO extends BaseDAO {
         session.getTransaction().commit();
         session.close();
         return snsSubscriptionBean;
+    }
+
+    @Override
+    public SnsSubscriptionBean update(Integer id, SnsSubscriptionBean snsSubscriptionBean) {
+        return null;
+    }
+
+    @Override
+    public void delete(SnsSubscriptionBean snsSubscriptionBean) {
+
     }
 
     public  SnsSubscriptionBean get(Integer id) {

@@ -17,7 +17,7 @@ import org.kyantra.triggers.EntityHandler;
 /**
  * Created by Siddhesh Prabhugaonkar on 13-11-2017.
  */
-public class ThingDAO extends BaseDAO {
+public class ThingDAO extends BaseDAO<ThingBean> {
     static ThingDAO instance = new ThingDAO();
     public static ThingDAO getInstance() { return instance; }
 
@@ -34,6 +34,16 @@ public class ThingDAO extends BaseDAO {
         session.close();
         EntityHandler.getInstance().triggerAdd(thingBean);
         return thingBean;
+    }
+
+    @Override
+    public ThingBean update(Integer id, ThingBean thingBean) {
+        return null;
+    }
+
+    @Override
+    public void delete(ThingBean thingBean) {
+
     }
 
     /**

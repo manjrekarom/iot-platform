@@ -21,6 +21,26 @@ public class AuthorizationDAO extends BaseDAO {
 
     }
 
+    @Override
+    public Object get(Integer id) {
+        return null;
+    }
+
+    @Override
+    public Object add(Object o) {
+        return null;
+    }
+
+    @Override
+    public Object update(Integer id, Object o) {
+        return null;
+    }
+
+    @Override
+    public void delete(Object o) {
+
+    }
+
     public boolean ownsUnit(UserBean user, UnitBean unit){
         try {
             Session session = getService().getSessionFactory().openSession();

@@ -94,7 +94,8 @@ public class Main {
         int port = Integer.parseInt(cmd.getOptionValue("port","8002"));
         String env = cmd.getOptionValue("env","dev");
 
-        HibernateService hibernateService = HibernateService.getInstance(); //initialized hibernate service
+        //initialized hibernate service
+        HibernateService hibernateService = HibernateService.getInstance();
         final HttpServer server = startServer(port, cmd.hasOption("ssl"));
     }
 }

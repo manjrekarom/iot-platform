@@ -40,10 +40,12 @@ public class DeviceAttributeDAO extends BaseDAO<DeviceAttributeBean> {
     }
 
     @Override
-    protected DeviceAttributeBean update(Integer id, DeviceAttributeBean deviceAttributeBean) {
-        Session session = getService().getSessionFactory().openSession();
-        session.beginTransaction();
+    public DeviceAttributeBean update(Integer id, DeviceAttributeBean deviceAttributeBean) {
+        return null;
+    }
 
+    @Override
+    public void delete(DeviceAttributeBean deviceAttributeBean) {
 
     }
 

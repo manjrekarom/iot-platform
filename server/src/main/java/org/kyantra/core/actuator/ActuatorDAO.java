@@ -5,7 +5,7 @@ import org.kyantra.core.rule.RuleBean;
 import org.kyantra.common.BaseDAO;
 import org.kyantra.core.rule.RuleDAO;
 
-public class ActuatorDAO extends BaseDAO {
+public class ActuatorDAO extends BaseDAO<ActuatorBean> {
     static ActuatorDAO instance = new ActuatorDAO();
     public static ActuatorDAO getInstance() { return instance; }
 
@@ -20,6 +20,16 @@ public class ActuatorDAO extends BaseDAO {
         session.getTransaction().commit();
         session.close();
         return actuatorBean;
+    }
+
+    @Override
+    public ActuatorBean update(Integer id, ActuatorBean actuatorBean) {
+        return null;
+    }
+
+    @Override
+    public void delete(ActuatorBean actuatorBean) {
+
     }
 
     public ActuatorBean get(Integer id) {

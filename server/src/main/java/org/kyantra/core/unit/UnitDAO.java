@@ -14,7 +14,7 @@ import org.kyantra.common.BaseDAO;
 import org.kyantra.core.auth.RightsDAO;
 import org.kyantra.triggers.EntityHandler;
 
-public class UnitDAO extends BaseDAO {
+public class UnitDAO extends BaseDAO<UnitBean> {
     static UnitDAO instance = new UnitDAO();
     public static UnitDAO getInstance(){ return instance; }
 
@@ -58,6 +58,16 @@ public class UnitDAO extends BaseDAO {
         session.close();
         EntityHandler.getInstance().triggerAdd(currentUnit);
         return currentUnit;
+    }
+
+    @Override
+    public UnitBean update(Integer id, UnitBean unitBean) {
+        return null;
+    }
+
+    @Override
+    public void delete(UnitBean unitBean) {
+
     }
 
     public UnitBean get(Integer id) {

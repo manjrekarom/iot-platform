@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public class CronDAO extends BaseDAO {
+public class CronDAO extends BaseDAO<CronBean> {
 
     private static CronDAO instance = new CronDAO();
     private AmazonCloudWatchEvents cwe;
@@ -92,6 +92,16 @@ public class CronDAO extends BaseDAO {
 
         }
         return bean;
+    }
+
+    @Override
+    public CronBean update(Integer id, CronBean cronBean) {
+        return null;
+    }
+
+    @Override
+    public void delete(CronBean cronBean) {
+
     }
 
     private void updateLambdaArn(Integer id, String ruleArn) {

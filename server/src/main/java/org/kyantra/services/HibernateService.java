@@ -1,6 +1,9 @@
 package org.kyantra.services;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
@@ -21,10 +24,16 @@ import org.kyantra.core.thing.ThingBean;
 import org.kyantra.core.unit.UnitBean;
 import org.kyantra.core.user.UserBean;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.util.Properties;
+
 public class HibernateService {
 
     private static HibernateService mService = null;
     private static SessionFactory sessionFactory = null;
+    private static EntityManagerFactory factory = null;
+    private static final String PERSISTENCE_UNIT_NAME = "iot";
 
     private HibernateService(String envConf) {
         Configuration configuration = new Configuration();
@@ -62,8 +71,15 @@ public class HibernateService {
         sessionFactory = configuration.buildSessionFactory(builder.build());
     }
 
-    public SessionFactory getSessionFactory() {
+    public static SessionFactory getSessionFactory() {
         return sessionFactory;
+    }
+
+    public static EntityManagerFactory getEntityManagerFactory() {
+        if (factory == null) {
+            factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+        }
+        return factory;
     }
 
     public static HibernateService getInstance() {

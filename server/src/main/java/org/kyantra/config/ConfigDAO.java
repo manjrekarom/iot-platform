@@ -7,7 +7,7 @@ import org.kyantra.common.BaseDAO;
 import javax.persistence.Query;
 import java.util.List;
 
-public class ConfigDAO extends BaseDAO {
+public class ConfigDAO extends BaseDAO<ConfigBean> {
 
     private static ConfigDAO instance = new ConfigDAO();
     public static ConfigDAO getInstance() { return instance; }
@@ -41,5 +41,25 @@ public class ConfigDAO extends BaseDAO {
             tx.commit();
             session.close();
         }
+    }
+
+    @Override
+    public ConfigBean get(Integer id) {
+        return null;
+    }
+
+    @Override
+    public ConfigBean add(ConfigBean configBean) {
+        return null;
+    }
+
+    @Override
+    public ConfigBean update(Integer id, ConfigBean configBean) {
+        return null;
+    }
+
+    @Override
+    public void delete(ConfigBean configBean) {
+
     }
 }

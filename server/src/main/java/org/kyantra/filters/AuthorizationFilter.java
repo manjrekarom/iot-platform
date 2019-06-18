@@ -106,9 +106,6 @@ public class AuthorizationFilter implements ContainerRequestFilter {
 //                    return;
 //                }
 //            }
-
-
-
         } else {
             return;
         }

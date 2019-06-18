@@ -5,7 +5,7 @@ import org.kyantra.core.rule.RuleBean;
 import org.kyantra.core.rule.RuleDAO;
 import org.kyantra.common.BaseDAO;
 
-public class SnsDAO extends BaseDAO {
+public class SnsDAO extends BaseDAO<SnsBean> {
     static SnsDAO instance = new SnsDAO();
     public static SnsDAO getInstance() { return instance; }
 
@@ -20,6 +20,16 @@ public class SnsDAO extends BaseDAO {
         session.getTransaction().commit();
         session.close();
         return snsBean;
+    }
+
+    @Override
+    public SnsBean update(Integer id, SnsBean snsBean) {
+        return null;
+    }
+
+    @Override
+    public void delete(SnsBean snsBean) {
+
     }
 
     public SnsBean get(Integer id) {

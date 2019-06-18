@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class RuleDAO extends BaseDAO {
+public class RuleDAO extends BaseDAO<RuleBean> {
     private static RuleDAO instance = new RuleDAO();
 
     public static RuleDAO getInstance() {
@@ -32,6 +32,16 @@ public class RuleDAO extends BaseDAO {
         session.getTransaction().commit();
         session.close();
         return ruleBean;
+    }
+
+    @Override
+    public RuleBean update(Integer id, RuleBean ruleBean) {
+        return null;
+    }
+
+    @Override
+    public void delete(RuleBean ruleBean) {
+
     }
 
     public RuleBean update(RuleBean ruleBean) {

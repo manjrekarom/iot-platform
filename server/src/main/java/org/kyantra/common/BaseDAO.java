@@ -13,16 +13,15 @@ public abstract class BaseDAO<T> {
         mService = HibernateService.getInstance();
     }
 
-
     public HibernateService getService() {
         return mService;
     }
 
-    abstract public T get(Integer id);
+    public abstract T get(Integer id);
 
-    protected abstract T add(T t);
+    public abstract T add(T t);
 
-    protected abstract T update(Integer id, T t);
+    public abstract T update(Integer id, T t);
 
-    abstract void delete(T t);
+    public abstract void delete(T t);
 }
